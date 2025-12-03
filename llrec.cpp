@@ -5,17 +5,22 @@
 //*********************************************
 
 void llpivot (Node*& head, Node*& smaller, Node*& larger, int pivot) {
-  if (head == NULL) {
-    smaller = NULL;
-    larger = NULL;
+  if (head == nullptr) {
+    smaller = nullptr;
+    larger = nullptr;
     return;
   }
 
-  if ((head->val) > pivot) {
-    larger = head;
-    llpivot(head->next, smaller, larger->next, pivot);
-  } else {
+  Node* next = head->next; // save next pointer
+  head->next = nullptr; // detach node
+
+  if ((head->val) <= pivot) {
     smaller = head;
-    llpivot(head->next, smaller->next, larger, pivot);
+    llpivot(next, smaller->next, larger, pivot);
+  } else {
+    larger = head;
+    llpivot(next, smaller, larger->next, pivot);
   }
+
+  head = nullptr;
 }
